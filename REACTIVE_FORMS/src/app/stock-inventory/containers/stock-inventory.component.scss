@@ -1,0 +1,44 @@
+.stock-inventory {
+  display: flex;
+  margin: 20px auto 0;
+  width: 90%;
+  font-size: 20px;
+
+  form {
+    flex: 1 0;
+  }
+
+  &__data {
+    display: flex;
+    flex: 1 0;
+    margin-left: 10px;
+    padding: 10px 0 10px 10px;
+    border: 1px solid #b795d0;
+    border-radius: 3px;
+    max-height: 750px;
+
+    div {
+      flex: 1 0;
+      overflow-y: auto;
+      overflow-x: auto;
+      margin-right: 10px;
+      padding: 10px;
+      border: 1px solid #b795d0;
+      border-radius: 3px;
+      font-size: 20px;
+
+      pre {
+        line-height: 1.25;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  button {
+    margin-bottom: 20px;
+  }
+
+  &__total-price {
+    margin-bottom: 20px;
+  }
+}

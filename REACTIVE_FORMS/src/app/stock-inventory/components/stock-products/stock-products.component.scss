@@ -1,0 +1,54 @@
+.stock-products {
+  min-height: 328px;
+  max-height: 328px;
+  overflow-y: auto;
+
+  &__scroll {
+    padding-right: 10px;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border: 1px solid #b795d0;
+    border-radius: 6px;
+    padding: 10px 15px;
+    background: #ffffff;
+
+    &:nth-child(2n + 1) {
+      background-color: #f8f3fd;
+    }
+
+
+    & input {
+      margin: 15px;
+      padding: 5px;
+    }
+
+    button {
+      flex: 0 0 100px;
+      margin-left: 30px;
+    }
+
+    stock-counter {
+      flex: 0 0 50px;
+      margin-left: 30px;
+    }
+  }
+
+  &__no-stocks {
+    padding: 15px;
+    justify-content: center;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    flex: 1 0;
+  }
+
+  &__price {
+    flex: 1 0;
+  }
+}

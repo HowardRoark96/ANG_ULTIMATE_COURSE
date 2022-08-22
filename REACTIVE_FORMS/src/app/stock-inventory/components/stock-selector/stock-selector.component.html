@@ -1,0 +1,35 @@
+<div
+  class="stock-selector"
+  [formGroup]="parent">
+
+  <div formGroupName="selector">
+
+    <div class="stock-select-container">
+      <app-stock-select
+        [itemList]="products"
+        [displayItemProp]="'name'"
+        formControlName="product_id">
+      </app-stock-select>
+      <div class="error"
+           *ngIf="isStockExists">
+        Item already exists in the stock
+      </div>
+    </div>
+
+    <app-stock-counter
+      [step]="5"
+      [min]="5"
+      [max]="100"
+      formControlName="quantity">
+    </app-stock-counter>
+
+    <button
+      type="button"
+      class="btn"
+      [disabled]="isStockExists || isSelectEmpty"
+      (click)="onAdd()">
+      Add stock
+    </button>
+
+  </div>
+</div>

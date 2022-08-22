@@ -1,0 +1,54 @@
+.stock-counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e4e2e7;
+  border-radius: 3px;
+  border: 1px solid transparent;
+
+  &.focused,
+  &:focus-visible {
+    outline: none;
+    border: 1px solid #000;
+  }
+
+  & p {
+    width: 100px;
+    text-align: center;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+
+    & button {
+      padding: 3px 10px;
+      font-size: 15px;
+      color: #ffffff;
+      background: #855aa5;
+      border: 0 solid transparent;
+      cursor: pointer;
+
+      &:hover {
+        background: #b795d0;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &:disabled {
+        background: #b6afc9;
+        cursor: not-allowed;
+      }
+
+      &:first-child {
+        border-top-right-radius: 3px;
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 3px;
+      }
+    }
+  }
+}

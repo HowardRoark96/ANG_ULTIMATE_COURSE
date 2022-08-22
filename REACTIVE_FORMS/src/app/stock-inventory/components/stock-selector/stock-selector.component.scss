@@ -1,0 +1,38 @@
+.stock-selector {
+  padding: 0 0 20px;
+  margin: 0 0 20px;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+
+  & > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .stock-select-container {
+      position: relative;
+      flex: 1 0;
+      margin: 15px 15px 15px 0;
+
+      .error {
+        position: absolute;
+        width: 100%;
+      }
+    }
+
+    input {
+      margin: 15px;
+      padding: 5px;
+    }
+
+    button {
+      flex: 0 0 100px;
+      margin-left: 30px;
+    }
+
+    app-stock-counter {
+      flex: 0 0 50px;
+      margin-left: 30px;
+    }
+  }
+}

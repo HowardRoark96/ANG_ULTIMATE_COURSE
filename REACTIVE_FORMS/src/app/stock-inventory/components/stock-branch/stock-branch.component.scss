@@ -1,0 +1,20 @@
+:host {
+  border-bottom: 1px solid #ccc;
+  margin: 0 0 20px;
+  padding: 0 0 20px;
+  display: block;
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 15px;
+
+    &:nth-child(n):not(:first-child) {
+      margin-top: 15px;
+    }
+
+    &:focus {
+      outline-color: #855aa5;
+    }
+  }
+}

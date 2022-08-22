@@ -1,0 +1,42 @@
+<div
+  class="stock-products"
+  [class.stock-products__scroll]="stocks.length > 4"
+  [formGroup]="parent">
+  <div formArrayName="stock">
+    <div *ngIf="!stocks.length; else stock_list"
+         class="stock-products__content stock-products__no-stocks">
+      No one item has been added
+    </div>
+
+    <ng-template #stock_list>
+      <div
+        *ngFor="let item of stocks; let i=index;"
+        class="stock-products__content"
+        [formGroupName]="i">
+
+        <div class="stock-products__name">
+          {{ getProduct(item.value.product_id).name }}
+        </div>
+
+        <div class="stock-products__price">
+          {{ getProduct(item.value.product_id).price | currency:'USD':true }}
+        </div>
+
+        <app-stock-counter
+          [step]="5"
+          [min]="5"
+          [max]="100"
+          formControlName="quantity">
+        </app-stock-counter>
+
+        <button
+          type="button"
+          class="btn"
+          (click)="onRemove(item, i)">
+          Remove
+        </button>
+
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+{
+  "cart": [],
+  "products": [
+    { "id": 1, "price": 255, "name": "Intel Xeon" },
+    { "id": 2, "price": 48, "name": "Intel Celeron & Pentium" },
+    { "id": 3, "price": 120, "name": "Intel Core i3" },
+    { "id": 4, "price": 200, "name": "Intel Core i5" },
+    { "id": 5, "price": 317, "name": "Intel Core i7" },
+    { "id": 6, "price": 589, "name": "Intel Core i9" }
+  ],
+  "branches": [
+    { "id": "A123" },
+    { "id": "A111" },
+    { "id": "C234" },
+    { "id": "Z181" },
+    { "id": "W214" }
+  ]
+}

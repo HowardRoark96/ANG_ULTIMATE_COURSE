@@ -1,0 +1,35 @@
+<div
+  class="stock-select"
+  [class.stock-select__expanded]="isExpanded"
+  (click)="onClickExpand($event)">
+
+  <p>{{ selectedItem[displayItemProp] }}</p>
+
+  <div>
+    <mat-icon
+      *ngIf="isExpanded"
+      (click)="onClickExpand($event)">
+      remove
+    </mat-icon>
+    <mat-icon
+      *ngIf="!isExpanded"
+      (click)="onClickExpand($event)"
+      class="add">
+      add
+    </mat-icon>
+  </div>
+
+  <ul class="stock-select__list"
+      *ngIf="isExpanded"
+      (document:click)="onClickOutside($event)">
+    <li
+      *ngFor="let item of itemList; let i = index"
+      class="stock-select__item"
+      (click)="onSelectItem(item, i)"
+    >
+      {{ item[displayItemProp] }}
+    </li>
+  </ul>
+</div>
+
+

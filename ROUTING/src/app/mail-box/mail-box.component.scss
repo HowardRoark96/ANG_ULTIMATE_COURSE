@@ -1,0 +1,36 @@
+@import "src/styles/colors";
+
+.mail-box {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  max-height: 100%;
+  overflow-y: auto;
+
+  .mail-box__title {
+    padding: 20px;
+    font-size: 30px;
+  }
+
+  .mail-box__title {
+    border-bottom: 2px solid $color_3;
+  }
+
+  .mail-box__mail {
+    border-bottom: 1px solid $color_3;
+  }
+
+  .mail-box__no-mails {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+
+    img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+  }
+}

@@ -1,0 +1,50 @@
+<div class="create-folder-btn">
+  <button
+    class="btn-new"
+    *ngIf="!isFormShown else formTmpl"
+    (click)="showHideForm()"
+    title="Create a new folder">
+    <img
+      class="btn-new__img"
+      src="assets/email-folder-add.svg"
+      alt="Create new folder">
+    <span>New folder</span>
+  </button>
+</div>
+
+<ng-template #formTmpl>
+  <form class="form-folder"
+        [formGroup]="form"
+        (ngSubmit)="createNewFolder()">
+    <input
+      type="text"
+      [style.margin-bottom]="!isFolderExists && isValid ? '10px' : '0'"
+      formControlName="name"
+      placeholder="Enter name of folder">
+    <div
+      class="error"
+      *ngIf="!isValid">
+      Folder name is required
+    </div>
+    <div
+      class="error"
+      *ngIf="isFolderExists">
+      Folder with such name already exists
+    </div>
+
+    <button
+      type="submit"
+      class="btn-create"
+      [disabled]="!form.valid"
+      title="Create a new folder">
+      Create new folder
+    </button>
+  </form>
+  <button
+    class="btn-hide"
+    (click)="showHideForm()"
+    title="Hide the form">
+    Hide
+  </button>
+
+</ng-template>

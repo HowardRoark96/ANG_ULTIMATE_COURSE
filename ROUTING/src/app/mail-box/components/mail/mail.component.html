@@ -1,0 +1,42 @@
+<div class="mail"
+     [ngClass]="{'mail__selected': isMailSelected, 'mail__not-readen': !mail.isReaden}"
+     (click)="onMailClick()">
+
+  <div class="mail__header">
+    <i class="mail-icon"
+       [class.mail-icon__active]="isMailSelected"
+       [class.mail-icon__not-readen]="!mail.isReaden">
+    </i>
+
+    <div class="mail-from">
+      {{ mail.from }}
+    </div>
+    <div class="time-receiving">
+      {{ mail.receivingTime | date }}
+    </div>
+    <mat-icon
+      (click)="makeAsUnread($event)"
+      class="mail-control"
+      title="Make as unread">
+      flag
+    </mat-icon>
+    <mat-icon
+      class="mail-control"
+      title="Remove to another folder">
+      reply
+    </mat-icon>
+    <mat-icon
+      class="mail-control"
+      title="Delete mail">
+      clear
+    </mat-icon>
+  </div>
+
+  <div class="mail__content">
+    <p class="mail-text"
+       [ngClass]="{'mail-text__selected': isMailSelected}">
+      {{ mail.text }}
+    </p>
+  </div>
+
+</div>

@@ -1,0 +1,46 @@
+<div class="app">
+  <header class="app__header">
+    <img
+      class="logo"
+      src="../assets/email-logo.svg"
+      alt="Logo">
+    <div class="title">Email manager</div>
+  </header>
+  <div class="app__content">
+
+    <nav class="app__content__nav-menu">
+      <app-create-folder-btn
+        (folderCreated)="refreshFolders($event)">
+      </app-create-folder-btn>
+      <a *ngFor="let folder of folders; let i = index"
+         class="folder"
+         [class.folder__active]="i === selectedFolderIndex"
+         (click)="onFolderClick(i)">
+        <img
+          *ngIf="!folder.canDelete"
+          src="assets/email-folder-system.svg"
+          alt="Folder icon">
+        <img
+          *ngIf="folder.canDelete"
+          src="assets/email-folder-icon.svg"
+          alt="Folder icon">
+        {{ folder.name }}
+        <mat-icon
+          *ngIf="folder.canDelete"
+          (click)="deleteFolder(i)"
+          class="folder-control"
+          title="Delete folder">
+          clear
+        </mat-icon>
+      </a>
+    </nav>
+
+    <div class="app__content__main">
+
+      <app-mail-box [folder]="folders[selectedFolderIndex]"></app-mail-box>
+
+      <app-helper-box></app-helper-box>
+
+    </div>
+  </div>
+</div>

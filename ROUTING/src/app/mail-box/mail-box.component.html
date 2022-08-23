@@ -1,0 +1,23 @@
+<div class="mail-box">
+
+  <div class="mail-box__title">
+    {{ folder.name }}
+  </div>
+
+  <div
+    *ngIf="!folder.mails; else mailTmpl"
+    class="mail-box__no-mails">
+    <img
+      src="assets/email-no-mail.svg"
+      alt="No mail found">
+    No mails.
+  </div>
+
+  <ng-template #mailTmpl>
+    <app-mail
+      class="mail-box__mail"
+      *ngFor="let mail of folder.mails; let i = index"
+      [mail]="mail">
+    </app-mail>
+  </ng-template>
+</div>

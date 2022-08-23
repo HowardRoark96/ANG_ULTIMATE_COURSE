@@ -1,0 +1,82 @@
+@import "src/styles/colors";
+
+.create-folder-btn {
+  display: flex;
+  flex-direction: column;
+  background-color: $color_1;
+
+  .btn-new {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 18px;
+    background-color: $color_1;
+    border: none;
+
+    &:hover {
+      background-color: $color_2;
+    }
+
+    &__img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+  }
+
+  .form-folder {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    input {
+      margin-bottom: 5px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid $color_7;
+
+      &:focus {
+        outline: 2px solid $color_3;
+      }
+    }
+
+    .error {
+      margin-bottom: 10px;
+      padding: 5px 5px 5px 10px;
+      border: 1px solid $font_color_error;
+      background-color: $background_color_error;
+      color: $font_color_error;
+      font-weight: 500;
+      position: relative;
+      animation-name: error;
+      animation-duration: .5s;
+
+      @keyframes error {
+        0% { left: -1px }
+        25% { left: 1px }
+        50% { left: -1px }
+        75% { left: 1px }
+        100% { left: -1px }
+      }
+    }
+
+    .btn-create {
+      padding: 5px;
+      font-size: 18px;
+      background-color: $color_3;
+      border: none;
+
+      &:hover {
+        background-color: $color_2;
+      }
+    }
+  }
+
+  .btn-hide {
+    margin: 5px 0;
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    color: $color_7;
+  }
+}

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthFormComponent } from './auth-form/auth-form.component';
 import { MainComponent } from './main/main.component';
 import { MainFolderResolve } from './resolvers/main-folder.resolve';
+import { AuthFormRoutingModule } from './auth-form/auth-form-routing.module';
 
 const ROUTES: Routes = [
   {
@@ -13,17 +13,16 @@ const ROUTES: Routes = [
     }
   },
   {
-    path: 'login',
-    component: AuthFormComponent
-  },
-  {
     path: '**',
     redirectTo: 'main'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(ROUTES)],
+  imports: [
+    RouterModule.forRoot(ROUTES),
+    AuthFormRoutingModule
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

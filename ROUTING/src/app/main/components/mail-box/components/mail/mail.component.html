@@ -12,7 +12,7 @@
       {{ mail.from }}
     </div>
     <div class="time-receiving">
-      {{ mail.receivingTime | date }}
+      {{ mail.receivingTime | date:'shortTime' }}
     </div>
     <mat-icon
       (click)="makeAsUnread($event)"

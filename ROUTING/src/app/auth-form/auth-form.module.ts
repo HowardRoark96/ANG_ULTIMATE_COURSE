@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthFormRoutingModule } from './auth-form-routing.module';
 
 
 @NgModule({
@@ -14,12 +15,15 @@ import { RouterModule, Routes } from '@angular/router';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AuthFormRoutingModule
   ],
   providers: [
     AuthService
   ],
-  exports: []
+  exports: [
+    AuthFormRoutingModule
+  ]
 })
 export class AuthFormModule {
 }

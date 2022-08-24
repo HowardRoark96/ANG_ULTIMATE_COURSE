@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { AuthService } from './auth.service';
+import { User } from '../auth-form/interfaces/user.interface';
+import { Folder } from '../main/interfaces/folder.interface';
+import { Mail } from '../main/interfaces/mail.interface';
 
 interface RequestFolder {
   id: string,
@@ -14,8 +18,51 @@ export class EmailService {
   static url = 'https://email-manager-6f4a0-default-rtdb.firebaseio.com/';
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {
+  }
+
+  private getConvertedObjectArray(value: object): object[] {
+    return Object.keys(value).map(key => ({...value[key], id: key}));
+  }
+
+  initNewUser(): Observable<any> {
+    const textAboutApplication = `Hello, <strong>${this.authService.user.value.login}</strong>!</br></br>` +
+      'The <strong>\'EMAIL MANAGER\'</strong> application allows you to conveniently manage your conversations.</br></br>' +
+      'Some tools for working with the application are listed below:</br>' +
+      ' - chat with registered users</br>' +
+      ' - delete messages</br>' +
+      ' - mark messages as unread</br>' +
+      ' - create and delete folders as you wish*</br>' +
+      ' - move specific emails to other folders</br>' +
+      ' - rename existing folders*</br></br>' +
+      '<strong>* with the exception of the system folders \'Inbox\' and \'Trash\'</strong>';
+
+    const textAccountInformation = `Hello, <strong>${this.authService.user.value.login}</strong>!</br></br>` +
+      'Your account information:</br></br>' +
+      `<strong>login - ${this.authService.user.value.login}</strong></br>` +
+      `<strong>password - ${this.authService.user.value.password}</strong>`;
+
+
+    return this.createSystemFolder('Inbox')
+      .pipe(
+        switchMap(() => this.createSystemFolder('Trash')),
+        switchMap(() => {
+          return forkJoin([
+            this.sendMail(
+              'System Info',
+              this.authService.user.value,
+              textAboutApplication
+            ),
+            this.sendMail(
+              'System Info',
+              this.authService.user.value,
+              textAccountInformation
+            )
+          ]);
+        })
+      );
   }
 
   createFolder(name: string): Observable<any> {
@@ -27,13 +74,7 @@ export class EmailService {
     };
 
     return this.http
-      .post<any>(`${EmailService.url}.json`, params)
-      .pipe(
-        map(res => {
-          console.log(res);
-          return res;
-        })
-      );
+      .post<any>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders.json`, params);
   }
 
   createSystemFolder(name: string): Observable<any> {
@@ -44,55 +85,63 @@ export class EmailService {
     };
 
     return this.http
-      .post<any>(`${EmailService.url}.json`, params)
+      .post<any>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders.json`, params)
       .pipe(
-        map(res => {
-          console.log(res);
-          return res;
-        })
+        map(() => params)
       );
   }
 
-  getAllFolders(): Observable<any[]> {
+  getAllUserFolders(user: User): Observable<Folder[]> {
     return this.http
-      .get<any[]>(`${EmailService.url}.json`)
+      .get<Folder[]>(`${EmailService.url}/${user.login}/${user.id}/folders.json`)
       .pipe(
         map(res => {
           if (!res) {
-            return [];
+            return [] as Folder[];
           }
 
-          const temp = Object.keys(res).map(key => ({...res[key], id: key}));
+          const folders = this.getConvertedObjectArray(res) as Folder[];
 
-          console.log(temp);
+          folders.forEach(folder => folder.mails = folder.mails ? this.getConvertedObjectArray(folder.mails) as Mail[] : []);
 
-          return temp;
-        })
-      );
-  }
-
-  getFolderByName(name: string): Observable<any> {
-    return this.http
-      .get<any>(`${EmailService.url}/${name}.json`)
-      .pipe(
-        map(res => {
-          if (!res) {
-            return [];
-          }
-
-          return Object.keys(res).map(key => ({...res[key], id: key}))[0];
+          return folders;
         })
       );
   }
 
   checkFolderName(name: string): Observable<boolean> {
-    return this.getAllFolders()
+    return this.getAllUserFolders(this.authService.user.value)
       .pipe(
         map(res => res.some(folder => folder.name === name))
       );
   }
 
   deleteFolderById(id: string): Observable<void> {
-    return this.http.delete<void>(`${EmailService.url}/${id}.json`);
+    return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${id}.json`);
+  }
+
+  sendMail(fromUser: string, toUser: User, text: string): Observable<any> {
+    const params = {
+      from: fromUser,
+      text,
+      isReaden: false,
+      receivingTime: 12345678
+    };
+
+    return this.getAllUserFolders(toUser)
+      .pipe(
+        switchMap(toUserFolder => {
+          return this.http
+            .post<any>(`${EmailService.url}/${toUser.login}/${toUser.id}/folders/${toUserFolder[0].id}/mails.json`, params);
+        })
+      );
+  }
+
+  getFolderById(id: string): Observable<Folder> {
+    return this.http
+      .get<Folder>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${id}.json`)
+      .pipe(
+        map(res => ({...res, id}))
+      );
   }
 }

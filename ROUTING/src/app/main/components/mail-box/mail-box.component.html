@@ -5,7 +5,7 @@
   </div>
 
   <div
-    *ngIf="!folder.mails; else mailTmpl"
+    *ngIf="!folder.mails || folder.mails.length === 0; else mailTmpl"
     class="mail-box__no-mails">
     <img
       src="../../../../assets/email-no-mail.svg"

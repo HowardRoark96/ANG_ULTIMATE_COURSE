@@ -8,6 +8,8 @@ import { HelperBoxModule } from './helper-box/helper-box.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthFormModule } from './auth-form/auth-form.module';
+import { AuthFormComponent } from './auth-form/auth-form.component';
 
 @NgModule({
   declarations: [
@@ -20,9 +22,12 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatIconModule,
     MailBoxModule,
-    HelperBoxModule
+    HelperBoxModule,
+    AuthFormModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AuthFormComponent
+  ]
 })
 export class AppModule { }

@@ -1,0 +1,117 @@
+<ng-container
+  [ngTemplateOutlet]="formTmpl"
+  [ngTemplateOutletContext]="ctx"
+></ng-container>
+
+<ng-template
+  #formTmpl
+  let-form
+  let-title="title"
+  let-formSwitcherText="formSwitcherText"
+  let-submitBtnText="submitBtnText"
+  let-onSubmit="onSubmit"
+  let-formSwitcherLinkText="formSwitcherLinkText"
+  let-onChangeFormMode="onChangeFormMode"
+>
+  <div class="auth-form">
+
+    <div class="auth-form__header">
+      <img
+        class="icon"
+        src="assets/email-logo.svg"
+        alt="Logo">
+      <span>Email Manager</span>
+    </div>
+
+    <div class="auth-form__title">{{ title }}</div>
+
+    <form
+      class="auth-form__body"
+      [formGroup]="form"
+    >
+      <div
+        class="auth-form__input"
+        [style.margin-bottom]="!isValidLogin || !isValidUserNameAsync || !isUserExistsAsync? '1px' : '' ">
+        <label for="login">
+          <img
+            *ngIf="!isValidLogin || !isValidUserNameAsync || !isUserExistsAsync || !isValidPassword || !isPasswordCorrectAsync; else validIconTmpl"
+            class="icon"
+            src="assets/email-person-invalid.svg"
+            alt="User login icon">
+        </label>
+        <input
+          type="text"
+          placeholder="Login"
+          id="login"
+          formControlName="login"
+          autocomplete="off">
+      </div>
+      <div
+        class="error"
+        *ngIf="!isValidLogin">
+        Login is required.
+      </div>
+      <div
+        class="error"
+        *ngIf="!isValidUserNameAsync">
+        User with such login already exists.
+      </div>
+      <div
+        class="error"
+        *ngIf="!isUserExistsAsync">
+        User with such login doesn't exists.
+      </div>
+
+      <div
+        class="auth-form__input"
+        [style.margin-bottom]="!isValidPassword || !isPasswordCorrectAsync ? '1px' : '' ">
+        <label for="password">
+          <img class="icon"
+               src="../../assets/email-password-icon.svg"
+               alt="User password icon">
+        </label>
+        <input
+          type="password"
+          placeholder="Password"
+          id="password"
+          formControlName="password">
+      </div>
+      <div
+        class="error"
+        *ngIf="!isValidPassword">
+        Password is required.
+      </div>
+      <div
+        class="error"
+        *ngIf="!isPasswordCorrectAsync">
+        Password is incorrect.
+      </div>
+
+      <button
+        type="submit"
+        class="auth-form__btn"
+        [disabled]="!form.valid"
+        (click)="onSubmit()">
+        {{ submitBtnText }}
+      </button>
+    </form>
+
+    <div class="auth-form__footer">
+    <span>
+     {{ formSwitcherText }}
+      <a
+        (click)="onChangeFormMode()">
+        {{ formSwitcherLinkText }}
+      </a>
+    </span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #validIconTmpl>
+  <img
+    *ngIf="isValidLogin"
+    class="icon"
+    src="assets/email-person-valid.svg"
+    alt="User login icon">
+</ng-template>

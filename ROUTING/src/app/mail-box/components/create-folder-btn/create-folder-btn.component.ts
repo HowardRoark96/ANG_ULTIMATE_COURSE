@@ -65,6 +65,6 @@ export class CreateFolderBtnComponent implements OnInit {
         map(res => {
           return res ? { folderAlreadyExists: true } : null;
         })
-      )
+      );
   }
 }

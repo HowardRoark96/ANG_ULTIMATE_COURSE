@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { map, of, switchMap } from 'rxjs';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 import { User } from './interfaces/user.interface';
+import { Router } from '@angular/router';
+import { EmailService } from '../services/email.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-auth-form',
   templateUrl: './auth-form.component.html',
   styleUrls: ['./auth-form.component.scss']
 })
@@ -46,7 +48,9 @@ export class AuthFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public authService: AuthService
+    public authService: AuthService,
+    private emailService: EmailService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -103,7 +107,13 @@ export class AuthFormComponent implements OnInit {
           return res;
         })
       )
-      .subscribe(res => this.authService.setCurrentUser(res as User));
+      .subscribe(res => {
+        this.form.reset();
+
+        this.authService.setCurrentUser(res as User);
+
+        this.router.navigate(['main']);
+      });
   }
 
   onSingUp() {
@@ -124,7 +134,7 @@ export class AuthFormComponent implements OnInit {
         })
       )
       .subscribe(() => {
-        this.form.reset();
+        this.emailService.initNewUser().subscribe(() => this.router.navigate(['main']));
       });
   }
 

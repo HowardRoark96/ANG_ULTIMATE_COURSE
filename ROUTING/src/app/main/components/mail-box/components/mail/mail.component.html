@@ -1,6 +1,6 @@
 <div class="mail"
      [ngClass]="{'mail__selected': isMailSelected, 'mail__not-readen': !mail.isReaden}"
-     (click)="onMailClick()">
+     (click)="onExpandClick($event, true)">
 
   <div class="mail__header">
     <i class="mail-icon"
@@ -34,9 +34,14 @@
 
   <div class="mail__content">
     <p class="mail-text"
-       [ngClass]="{'mail-text__selected': isMailSelected}">
-      {{ mail.text }}
+       [ngClass]="{'mail-text__selected': isMailSelected}"
+       [innerHTML]="mail.text">
     </p>
   </div>
-
 </div>
+<button
+  *ngIf="isMailSelected"
+  class="btn"
+  (click)="onExpandClick($event, false)">
+  Collapse
+</button>

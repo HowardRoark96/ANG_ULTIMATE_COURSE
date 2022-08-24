@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
-import { Mail } from '../../interfaces/mail.interface';
+import { Component, Input, OnInit } from '@angular/core';
+import { Mail } from '../../../../interfaces/mail.interface';
 
 @Component({
   selector: 'app-mail',
@@ -11,20 +11,19 @@ export class MailComponent implements OnInit {
 
   @Input() mail: Mail;
 
-  constructor(
-    private elRef: ElementRef
-  ) { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
-  onMailClick() {
-    this.isMailSelected = !this.isMailSelected;
-    this.mail.isReaden = true;
+  onExpandClick(event: Event, state: boolean) {
+    this.isMailSelected = state;
+    if (!this.mail.isReaden && this.isMailSelected)
+      this.mail.isReaden = true;
 
-    if (!this.isMailSelected) {
-      this.elRef.nativeElement.getElementsByClassName('mail-text')[0].scrollTop = 0;
-    }
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   makeAsUnread(event: MouseEvent) {

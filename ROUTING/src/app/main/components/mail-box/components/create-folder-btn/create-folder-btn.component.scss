@@ -1,4 +1,4 @@
-@import "src/styles/colors";
+@import "../../../../../../styles/colors";
 
 .create-folder-btn {
   display: flex;
@@ -40,33 +40,13 @@
       }
     }
 
-    //.error {
-    //  margin-bottom: 10px;
-    //  padding: 5px 5px 5px 10px;
-    //  border: 1px solid $font_color_error;
-    //  background-color: $background_color_error;
-    //  color: $font_color_error;
-    //  font-weight: 500;
-    //  position: relative;
-    //  animation-name: error;
-    //  animation-duration: .5s;
-    //
-    //  @keyframes error {
-    //    0% { left: -1px }
-    //    25% { left: 1px }
-    //    50% { left: -1px }
-    //    75% { left: 1px }
-    //    100% { left: -1px }
-    //  }
-    //}
-
     .btn-create {
       padding: 5px;
       font-size: 18px;
       background-color: $color_3;
       border: none;
 
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: $color_2;
       }
     }

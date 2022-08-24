@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Mail } from '../../../../interfaces/mail.interface';
 
 @Component({
@@ -11,7 +11,9 @@ export class MailComponent implements OnInit {
 
   @Input() mail: Mail;
 
-  constructor() {
+  constructor(
+    private elRef: ElementRef
+  ) {
   }
 
   ngOnInit(): void {
@@ -21,6 +23,10 @@ export class MailComponent implements OnInit {
     this.isMailSelected = state;
     if (!this.mail.isReaden && this.isMailSelected)
       this.mail.isReaden = true;
+
+    if (!this.isMailSelected)
+      this.elRef.nativeElement.getElementsByClassName('mail-text')[0].scrollTop = 0;
+
 
     event.preventDefault();
     event.stopPropagation();

@@ -36,3 +36,58 @@ body {
     100% { left: -1px }
   }
 }
+
+.dialog-container {
+  background-color: $color_1;
+
+  mat-dialog-container {
+    position: relative;
+    padding: 23px;
+    border-radius: 0;
+    overflow: unset;
+
+    mat-dialog-content {
+      margin: 0 0 20px 0;
+      padding: 0;
+      flex-wrap: unset;
+      overflow: unset;
+      max-height: unset;
+    }
+
+    mat-dialog-actions {
+      margin: 0;
+      padding: 0;
+      flex-wrap: unset;
+      justify-content: end;
+      min-height: unset;
+    }
+
+    .btn {
+      width: unset;
+      margin: 0;
+      padding: 10px 35px;
+
+      &:nth-child(n):not(:last-child) {
+        margin-right: 10px;
+      }
+
+      &-save {
+
+      }
+
+      &-exit {
+
+      }
+    }
+
+    .icon-exit {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 3px;
+      right: 3px;
+      font-size: 20px;
+    }
+
+  }
+}

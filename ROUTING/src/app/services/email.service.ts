@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, forkJoin, map, Observable, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { User } from '../auth-form/interfaces/user.interface';
 import { Folder } from '../main/interfaces/folder.interface';
@@ -17,11 +17,12 @@ interface RequestFolder {
 export class EmailService {
   static url = 'https://email-manager-6f4a0-default-rtdb.firebaseio.com/';
 
+  public folders: BehaviorSubject<Folder[]> = new BehaviorSubject<Folder[]>([]);
+
   constructor(
     private http: HttpClient,
     private authService: AuthService
-  ) {
-  }
+  ) { }
 
   private getConvertedObjectArray(value: object): object[] {
     return Object.keys(value).map(key => ({...value[key], id: key}));
@@ -103,6 +104,8 @@ export class EmailService {
           const folders = this.getConvertedObjectArray(res) as Folder[];
 
           folders.forEach(folder => folder.mails = folder.mails ? this.getConvertedObjectArray(folder.mails) as Mail[] : []);
+
+          this.folders.next(folders);
 
           return folders;
         })

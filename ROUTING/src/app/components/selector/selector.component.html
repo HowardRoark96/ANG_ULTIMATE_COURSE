@@ -1,0 +1,36 @@
+<div
+  class="selector"
+  [class.selector__expanded]="isExpanded"
+  (click)="onClickExpand($event)">
+
+  <p>{{ selectedItem[displayItemProp] }}</p>
+
+  <div>
+    <mat-icon
+      *ngIf="isExpanded"
+      class="expander"
+      (click)="onClickExpand($event)">
+      expand_less
+    </mat-icon>
+    <mat-icon
+      *ngIf="!isExpanded"
+      (click)="onClickExpand($event)"
+      class="expander">
+      expand_more
+    </mat-icon>
+  </div>
+
+  <ul class="selector__list"
+      *ngIf="isExpanded"
+      [style.max-height]="maxHeightDropdown || 'unset'"
+      [style.overflow]="maxHeightDropdown ? 'auto' : 'unset'"
+      (document:click)="onClickOutside($event)">
+    <li
+      *ngFor="let item of itemList; let i = index"
+      class="selector__item"
+      (click)="onSelectItem(item, i)"
+    >
+      {{ item[displayItemProp] }}
+    </li>
+  </ul>
+</div>

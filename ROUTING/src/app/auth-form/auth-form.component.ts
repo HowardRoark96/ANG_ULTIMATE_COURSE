@@ -108,10 +108,7 @@ export class AuthFormComponent implements OnInit {
         })
       )
       .subscribe(res => {
-        this.form.reset();
-
         this.authService.setCurrentUser(res as User);
-
         this.router.navigate(['main']);
       });
   }

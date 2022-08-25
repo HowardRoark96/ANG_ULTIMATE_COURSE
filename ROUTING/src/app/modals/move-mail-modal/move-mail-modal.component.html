@@ -1,0 +1,40 @@
+<h3 mat-dialog-title>{{title}}</h3>
+
+<div class="mat-dialog-info">
+  {{info}}
+</div>
+
+<mat-dialog-content [formGroup]="form">
+  <app-selector
+    matInput
+    [itemList]="folders"
+    maxHeightDropdown="180px"
+    formControlName="folderIndex">
+  </app-selector>
+  <div
+    class="error"
+    *ngIf="isSameFolder">
+    The same folder is selected. Please, select another folder.
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    class="btn btn-save"
+    [disabled]="!form.valid || !form.touched"
+    (click)="save()">
+    Save
+  </button>
+  <button
+    class="btn btn-close"
+    (click)="close()">
+    Close
+  </button>
+</mat-dialog-actions>
+
+<mat-icon
+  (click)="close()"
+  class="icon-exit"
+  title="Close modal">
+  clear
+</mat-icon>

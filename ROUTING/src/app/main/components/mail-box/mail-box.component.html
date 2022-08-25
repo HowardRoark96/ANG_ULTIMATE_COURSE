@@ -17,7 +17,8 @@
     <app-mail
       class="mail-box__mail"
       *ngFor="let mail of folder.mails; let i = index"
-      [mail]="mail">
+      [mail]="mail"
+      [folderId]="folder.id">
     </app-mail>
   </ng-template>
 </div>

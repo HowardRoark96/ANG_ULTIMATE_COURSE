@@ -193,4 +193,9 @@ export class EmailService {
         switchMap(() => this.deleteMailById(fromFolderId, mail.id))
       );
   }
+
+  makeAsUnread(folderEntityId: string, mailId: string, isReaden: boolean): Observable<never> {
+    return this.http
+      .put<never>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${folderEntityId}/mails/${mailId}/isReaden.json`, isReaden);
+  }
 }

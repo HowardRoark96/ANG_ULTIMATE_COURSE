@@ -37,15 +37,17 @@ export class MailComponent implements OnInit {
       this.elRef.nativeElement.getElementsByClassName('mail-text')[0].scrollTop = 0;
   }
 
-  makeAsUnread(event: MouseEvent) {
+  onMakeAsUnread(event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
 
-    this.mail.isReaden = false;
+    this.mail.isReaden = !this.mail.isReaden;
     this.isMailSelected = false;
+
+    this.emailService.makeAsUnread(this.folderId, this.mail.id,  this.mail.isReaden).subscribe();
   }
 
-  moveToFolder(event: Event) {
+  onMove(event: Event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -54,7 +56,6 @@ export class MailComponent implements OnInit {
     dialogConfig.panelClass = 'dialog-container';
 
     dialogConfig.data = {
-      id: 1,
       title: `You are going to move email from '${this.mail.from}' to another folder.`,
       info: 'Select a folder to move:',
       currentFolderId: this.folderId
@@ -70,5 +71,23 @@ export class MailComponent implements OnInit {
         }
       }
     );
+  }
+
+  onDelete(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const trashFolder = this.emailService.folders.getValue().find(folder => folder.name === 'Trash');
+
+    console.log(trashFolder);
+
+    if (trashFolder && trashFolder.entityId === this.folderId) {
+      this.emailService.deleteMailById(this.folderId, this.mail.id)
+        .subscribe(() => this.onMailMove.emit());
+    }
+    else {
+      this.emailService.moveMail(this.folderId, trashFolder?.entityId as string, this.mail)
+        .subscribe(() => this.onMailMove.emit());
+    }
   }
 }

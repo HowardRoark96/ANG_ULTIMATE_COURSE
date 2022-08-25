@@ -15,18 +15,19 @@
       {{ mail.receivingTime | date:'shortTime' }}
     </div>
     <mat-icon
-      (click)="makeAsUnread($event)"
+      (click)="onMakeAsUnread($event)"
       class="mail-control"
       title="Make as unread">
       flag
     </mat-icon>
     <mat-icon
-      (click)="moveToFolder($event)"
+      (click)="onMove($event)"
       class="mail-control"
       title="Move to another folder">
       reply
     </mat-icon>
     <mat-icon
+      (click)="onDelete($event)"
       class="mail-control"
       title="Delete mail">
       clear

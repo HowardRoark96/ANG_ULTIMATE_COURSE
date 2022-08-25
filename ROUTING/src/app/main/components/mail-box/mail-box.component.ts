@@ -10,4 +10,12 @@ export class MailBoxComponent implements OnInit {
   @Input() folder: Folder;
 
   ngOnInit() { }
+
+  onMailDelete(mailIndex: number) {
+
+  }
+
+  onMailMove(mailIndex: number) {
+    this.folder.mails?.splice(mailIndex, 1);
+  }
 }

@@ -123,6 +123,10 @@ export class EmailService {
     return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${id}.json`);
   }
 
+  deleteMailById(folderId: string, mailId: string): Observable<void> {
+    return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${folderId}/mails/${mailId}.json`);
+  }
+
   sendMail(fromUser: string, toUser: User, text: string): Observable<any> {
     const params = {
       from: fromUser,
@@ -145,6 +149,18 @@ export class EmailService {
       .get<Folder>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${id}.json`)
       .pipe(
         map(res => ({...res, id}))
+      );
+  }
+
+  moveMail(fromFolderId: string, toFolderId: string, mail: Mail): Observable<void> {
+    return this.http
+      .post<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${toFolderId}/mails.json`, mail)
+      .pipe(
+        switchMap(res => {
+          console.log('Moved mail response:', res);
+
+          return this.deleteMailById(fromFolderId, mail.id);
+        })
       );
   }
 }

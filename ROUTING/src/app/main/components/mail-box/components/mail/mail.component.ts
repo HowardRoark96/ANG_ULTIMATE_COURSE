@@ -1,7 +1,8 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Mail } from '../../../../interfaces/mail.interface';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MoveMailModalComponent } from '../../../../../modals/move-mail-modal/move-mail-modal.component';
+import { EmailService } from '../../../../../services/email.service';
 
 @Component({
   selector: 'app-mail',
@@ -13,10 +14,13 @@ export class MailComponent implements OnInit {
 
   @Input() mail: Mail;
   @Input() folderId: string;
+  @Output() onMailDelete: EventEmitter<never> = new EventEmitter<never>();
+  @Output() onMailMove: EventEmitter<never> = new EventEmitter<never>();
 
   constructor(
     private elRef: ElementRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private emailService: EmailService
   ) { }
 
   ngOnInit(): void { }
@@ -59,7 +63,12 @@ export class MailComponent implements OnInit {
     const dialogRef = this.dialog.open(MoveMailModalComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
-      data => console.log("Dialog output:", data)
+      toFolderId => {
+        if(toFolderId?.folderIndex) {
+          this.emailService.moveMail(this.folderId, toFolderId.folderIndex, this.mail)
+            .subscribe(() => this.onMailMove.emit());
+        }
+      }
     );
   }
 }

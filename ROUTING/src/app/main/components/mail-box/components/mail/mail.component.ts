@@ -14,8 +14,7 @@ export class MailComponent implements OnInit {
 
   @Input() mail: Mail;
   @Input() folderId: string;
-  @Output() onMailDelete: EventEmitter<never> = new EventEmitter<never>();
-  @Output() onMailMove: EventEmitter<never> = new EventEmitter<never>();
+  @Output() onMailMoveOrDelete: EventEmitter<never> = new EventEmitter<never>();
 
   constructor(
     private elRef: ElementRef,
@@ -30,8 +29,11 @@ export class MailComponent implements OnInit {
     event.stopPropagation();
 
     this.isMailSelected = state;
-    if (!this.mail.isReaden && this.isMailSelected)
+
+    if (!this.mail.isReaden && this.isMailSelected){
       this.mail.isReaden = true;
+      this.emailService.makeAsUnread(this.folderId, this.mail.id,  this.mail.isReaden).subscribe();
+    }
 
     if (!this.isMailSelected)
       this.elRef.nativeElement.getElementsByClassName('mail-text')[0].scrollTop = 0;
@@ -67,7 +69,7 @@ export class MailComponent implements OnInit {
       toFolderId => {
         if(toFolderId?.folderIndex) {
           this.emailService.moveMail(this.folderId, toFolderId.folderIndex, this.mail)
-            .subscribe(() => this.onMailMove.emit());
+            .subscribe(() => this.onMailMoveOrDelete.emit());
         }
       }
     );
@@ -79,15 +81,13 @@ export class MailComponent implements OnInit {
 
     const trashFolder = this.emailService.folders.getValue().find(folder => folder.name === 'Trash');
 
-    console.log(trashFolder);
-
     if (trashFolder && trashFolder.entityId === this.folderId) {
       this.emailService.deleteMailById(this.folderId, this.mail.id)
-        .subscribe(() => this.onMailMove.emit());
+        .subscribe(() => this.onMailMoveOrDelete.emit());
     }
     else {
       this.emailService.moveMail(this.folderId, trashFolder?.entityId as string, this.mail)
-        .subscribe(() => this.onMailMove.emit());
+        .subscribe(() => this.onMailMoveOrDelete.emit());
     }
   }
 }

@@ -24,11 +24,7 @@ export class MailBoxComponent implements OnInit {
     });
   }
 
-  onMailDelete(mailIndex: number) {
-
-  }
-
-  onMailMove(mailIndex: number) {
+  onMailMoveOrDelete(mailIndex: number) {
     this.folder.mails?.splice(mailIndex, 1);
   }
 }

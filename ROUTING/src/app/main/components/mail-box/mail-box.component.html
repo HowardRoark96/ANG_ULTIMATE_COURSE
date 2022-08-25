@@ -18,8 +18,7 @@
       class="mail-box__mail"
       *ngFor="let mail of folder.mails; let i = index"
       [mail]="mail"
-      (onMailDelete)="onMailDelete(i)"
-      (onMailMove)="onMailMove(i)"
+      (onMailMoveOrDelete)="onMailMoveOrDelete(i)"
       [folderId]="folder.id">
     </app-mail>
   </ng-template>

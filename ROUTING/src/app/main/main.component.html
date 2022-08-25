@@ -10,7 +10,7 @@
 
     <nav class="main__content__nav-menu">
       <app-create-folder-btn
-        (folderCreated)="folderCreated($event)">
+        (folderCreated)="onFolderCreated($event)">
       </app-create-folder-btn>
       <a *ngFor="let folder of folders; let i = index"
          class="folder"
@@ -37,10 +37,9 @@
 
     <div class="main__content__body">
 
-      <app-mail-box
-        *ngIf="folders[selectedFolderIndex]"
-        [folder]="folders[selectedFolderIndex]">
-      </app-mail-box>
+      <div class="app-mail-box">
+        <router-outlet></router-outlet>
+      </div>
 
       <app-helper-box></app-helper-box>
 

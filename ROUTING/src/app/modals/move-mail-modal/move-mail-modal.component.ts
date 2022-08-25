@@ -18,7 +18,7 @@ export class MoveMailModalComponent implements OnInit {
 
   get isSameFolder() {
     return (
-      this.form.get('folderIndex')?.value === this.folders[this.currentFolderId].id
+      this.form.get('folderIndex')?.value === this.folders[this.currentFolderId].entityId
       && this.form.touched
     )
   }
@@ -33,7 +33,7 @@ export class MoveMailModalComponent implements OnInit {
     this.info = data.info;
 
     this.folders = this.emailService.folders.value;
-    this.currentFolderId = this.folders.findIndex(folder => folder.id === data.currentFolderId);
+    this.currentFolderId = this.folders.findIndex(folder => folder.entityId === data.currentFolderId);
   }
 
   ngOnInit(): void {

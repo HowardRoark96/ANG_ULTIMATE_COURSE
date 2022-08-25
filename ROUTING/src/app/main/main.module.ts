@@ -11,6 +11,7 @@ import {
   CreateFolderBtnComponent
 } from './components/mail-box/components/create-folder-btn/create-folder-btn.component';
 import { MainFolderResolve } from '../resolvers/main-folder.resolve';
+import { MailBoxResolve } from '../resolvers/mail-box.resolve';
 
 const routes: Routes = [];
 
@@ -29,7 +30,8 @@ const routes: Routes = [];
     HelperBoxComponent
   ],
   providers: [
-    MainFolderResolve
+    MainFolderResolve,
+    MailBoxResolve
   ],
   exports: [
     MailBoxComponent,

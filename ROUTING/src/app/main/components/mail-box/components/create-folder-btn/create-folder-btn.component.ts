@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map, of, switchMap } from 'rxjs';
 import { EmailService } from '../../../../../services/email.service';
 import { Folder } from '../../../../interfaces/folder.interface';
-import { Mail } from '../../../../interfaces/mail.interface';
 
 @Component({
   selector: 'app-create-folder-btn',
@@ -11,7 +10,7 @@ import { Mail } from '../../../../interfaces/mail.interface';
   styleUrls: ['./create-folder-btn.component.scss']
 })
 export class CreateFolderBtnComponent implements OnInit {
-  @Output() folderCreated = new EventEmitter<string>;
+  @Output() folderCreated = new EventEmitter<Folder>;
 
   isFormShown: boolean = false;
 
@@ -35,8 +34,7 @@ export class CreateFolderBtnComponent implements OnInit {
     private emailService: EmailService
   ) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
   showHideForm() {
     this.isFormShown = !this.isFormShown;
@@ -52,13 +50,13 @@ export class CreateFolderBtnComponent implements OnInit {
             return of();
           }
 
-          return this.emailService.createFolder(this.form.get('name')?.value);
+          return this.emailService.createFolderEntity(this.form.get('name')?.value);
         })
       )
       .subscribe(res => {
         this.form.reset();
         this.isFormShown = !this.isFormShown;
-        this.folderCreated.emit(res.name);
+        this.folderCreated.emit(res.folder);
       });
   }
 

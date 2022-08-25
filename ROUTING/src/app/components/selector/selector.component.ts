@@ -18,7 +18,8 @@ export class SelectorComponent implements ControlValueAccessor {
   private onTouch: Function;
 
   @Input() itemList: any[];
-  @Input() displayItemProp: string = 'name';
+  @Input() selectProp: string = 'id';
+  @Input() displayProp: string = 'name';
   @Input() maxHeightDropdown: string;
 
   selectedItem: any;
@@ -34,7 +35,7 @@ export class SelectorComponent implements ControlValueAccessor {
 
   writeValue(value: any) {
     if (value === undefined)
-      this.selectedItem = { [this.displayItemProp]: 'Select'};
+      this.selectedItem = { [this.displayProp]: 'Select'};
     else {
       this.selectedItem = this.itemList[value];
     }
@@ -63,7 +64,7 @@ export class SelectorComponent implements ControlValueAccessor {
 
   onSelectItem(selectedItem: any, index: number) {
     this.selectedItem = this.itemList[index];
-    this.onModelChange(this.selectedItem.id);
+    this.onModelChange(this.selectedItem[this.selectProp]);
     this.onTouch();
   }
 }

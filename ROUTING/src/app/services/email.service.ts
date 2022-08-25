@@ -3,11 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, forkJoin, map, Observable, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
 import { User } from '../auth-form/interfaces/user.interface';
-import { Folder } from '../main/interfaces/folder.interface';
+import { Folder, FolderEntity } from '../main/interfaces/folder.interface';
 import { Mail } from '../main/interfaces/mail.interface';
 
-interface RequestFolder {
-  id: string,
+interface RequestObject {
   name: string
 }
 
@@ -28,6 +27,10 @@ export class EmailService {
     return Object.keys(value).map(key => ({...value[key], id: key}));
   }
 
+  private getConvertedObjectArrayWithoutId(value: object): object[] {
+    return Object.keys(value).map(key => ({...value[key]}));
+  }
+
   initNewUser(): Observable<any> {
     const textAboutApplication = `Hello, <strong>${this.authService.user.value.login}</strong>!</br></br>` +
       'The <strong>\'EMAIL MANAGER\'</strong> application allows you to conveniently manage your conversations.</br></br>' +
@@ -46,9 +49,9 @@ export class EmailService {
       `<strong>password - ${this.authService.user.value.password}</strong>`;
 
 
-    return this.createSystemFolder('Inbox')
+    return this.createFolderEntity('Inbox', true)
       .pipe(
-        switchMap(() => this.createSystemFolder('Trash')),
+        switchMap(() => this.createFolderEntity('Trash', true)),
         switchMap(() => {
           return forkJoin([
             this.sendMail(
@@ -64,31 +67,44 @@ export class EmailService {
           ]);
         })
       );
-  }
+  };
 
-  createFolder(name: string): Observable<any> {
+  createFolderEntity(name: string, isSystemFolder: boolean = false): Observable<any> {
     const params = {
       name,
-      mails: [],
-      canDelete: true,
-      canEdit: true
+      canDelete: !isSystemFolder,
+      canEdit: !isSystemFolder
     };
 
     return this.http
-      .post<any>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders.json`, params);
-  }
-
-  createSystemFolder(name: string): Observable<any> {
-    const params = {
-      name,
-      canDelete: false,
-      canEdit: false
-    };
-
-    return this.http
-      .post<any>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders.json`, params)
+      .post<any>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities.json`, params)
       .pipe(
-        map(() => params)
+        map((data: RequestObject) => ({...params, id: data.name})),
+        switchMap((data: FolderEntity) => this.createFolder(data))
+      );
+  }
+
+  private createFolder(folderEntity: FolderEntity): Observable<{ folder: Folder, folderEntity: FolderEntity }> {
+    const folder = {
+      name: folderEntity.name,
+      entityId: folderEntity.id,
+      canDelete: folderEntity.canDelete,
+      canEdit: folderEntity.canEdit
+    };
+
+    return this.http
+      .post<RequestObject>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders.json`, folder)
+      .pipe(
+        map((data: RequestObject) => {
+          const resultData = {
+            folder: ({ ...folder, id: data.name}),
+            folderEntity: ({ ...folderEntity, mails: [] })
+          };
+
+          this.folders.next([...this.folders.getValue(), resultData.folder]);
+
+          return resultData;
+        })
       );
   }
 
@@ -96,14 +112,8 @@ export class EmailService {
     return this.http
       .get<Folder[]>(`${EmailService.url}/${user.login}/${user.id}/folders.json`)
       .pipe(
-        map(res => {
-          if (!res) {
-            return [] as Folder[];
-          }
-
-          const folders = this.getConvertedObjectArray(res) as Folder[];
-
-          folders.forEach(folder => folder.mails = folder.mails ? this.getConvertedObjectArray(folder.mails) as Mail[] : []);
+        map((data: Folder[]) => {
+          const folders = this.getConvertedObjectArray(data) as Folder[];
 
           this.folders.next(folders);
 
@@ -119,12 +129,32 @@ export class EmailService {
       );
   }
 
-  deleteFolderById(id: string): Observable<void> {
-    return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${id}.json`);
+  deleteFolderEntityById(id: string): Observable<never> {
+    return this.http
+      .delete<never>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${id}.json`)
+      .pipe(
+        switchMap(() => this.deleteFolderById(id))
+      );
+  }
+
+  private deleteFolderById(entityId: string): Observable<never> {
+    const newFolders = this.folders.getValue();
+    const index = newFolders.findIndex(folder => folder.entityId === entityId);
+
+    return this.http
+      .delete<never>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${newFolders[index].id}.json`)
+      .pipe(
+        map(res => {
+          newFolders.splice(index,1)
+          this.folders.next(newFolders);
+
+          return res;
+        })
+      );
   }
 
   deleteMailById(folderId: string, mailId: string): Observable<void> {
-    return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${folderId}/mails/${mailId}.json`);
+    return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${folderId}/mails/${mailId}.json`);
   }
 
   sendMail(fromUser: string, toUser: User, text: string): Observable<any> {
@@ -139,28 +169,28 @@ export class EmailService {
       .pipe(
         switchMap(toUserFolder => {
           return this.http
-            .post<any>(`${EmailService.url}/${toUser.login}/${toUser.id}/folders/${toUserFolder[0].id}/mails.json`, params);
+            .post<any>(`${EmailService.url}/${toUser.login}/${toUser.id}/foldersEntities/${toUserFolder[0].entityId}/mails.json`, params);
         })
       );
   }
 
-  getFolderById(id: string): Observable<Folder> {
+  getFolderById(id: string): Observable<FolderEntity> {
     return this.http
-      .get<Folder>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${id}.json`)
+      .get<FolderEntity>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${id}.json`)
       .pipe(
-        map(res => ({...res, id}))
+        map((folder: FolderEntity) => {
+          folder.mails = folder.mails ? this.getConvertedObjectArray(folder.mails) as Mail[] : [];
+
+          return ({...folder, id});
+        })
       );
   }
 
   moveMail(fromFolderId: string, toFolderId: string, mail: Mail): Observable<void> {
     return this.http
-      .post<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/folders/${toFolderId}/mails.json`, mail)
+      .post<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${toFolderId}/mails.json`, ({...mail, id: null}))
       .pipe(
-        switchMap(res => {
-          console.log('Moved mail response:', res);
-
-          return this.deleteMailById(fromFolderId, mail.id);
-        })
+        switchMap(() => this.deleteMailById(fromFolderId, mail.id))
       );
   }
 }

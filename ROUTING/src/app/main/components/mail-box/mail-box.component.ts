@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Folder } from '../../interfaces/folder.interface';
+import { FolderEntity } from '../../interfaces/folder.interface';
+import { map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-mail-box',
@@ -7,9 +9,20 @@ import { Folder } from '../../interfaces/folder.interface';
   templateUrl: 'mail-box.component.html'
 })
 export class MailBoxComponent implements OnInit {
-  @Input() folder: Folder;
+  @Input() folder: FolderEntity;
 
-  ngOnInit() { }
+  constructor(
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit() {
+    this.route.data
+      .pipe(
+        map(data => data?.['folder'])
+      ).subscribe(data => {
+      this.folder = data;
+    });
+  }
 
   onMailDelete(mailIndex: number) {
 

@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Folder } from './interfaces/folder.interface';
 import { EmailService } from '../services/email.service';
 import { map } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { User } from '../auth-form/interfaces/user.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -15,41 +14,40 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class MainComponent implements OnInit {
   folders: Folder[];
   selectedFolderIndex: number = 0;
-  user: User;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private emailService: EmailService,
-    private cd: ChangeDetectorRef
+    private emailService: EmailService
   ) {
   }
 
   ngOnInit() {
-    this.user = this.authService.user.value;
-
-    if (!this.user.id) this.router.navigate(['login']);
-
-    this.route.data.pipe(map(data => data?.['folders'])).subscribe(res => this.folders = res);
+    this.route.data
+      .pipe(map(data => data?.['folders']))
+      .subscribe(data => {
+        this.folders = data;
+        this.router.navigate([`folder/${this.folders[0].entityId}`], { relativeTo: this.route });
+      });
   }
 
   onFolderClick(index: number) {
     this.selectedFolderIndex = index;
+    this.router.navigate(['folder/' + this.folders[index].entityId], { relativeTo: this.route });
   }
 
-  folderCreated(folderId: string) {
-    this.emailService.getFolderById(folderId)
-      .subscribe(folder => this.folders.push(folder));
+  onFolderCreated(folder: Folder) {
+    this.folders.push(folder);
   }
 
   deleteFolder(event: Event, index: number) {
-    this.emailService.deleteFolderById(this.folders[index].id)
+    this.emailService.deleteFolderEntityById(this.folders[index].entityId)
       .subscribe(() => {
           this.folders.splice(index, 1);
 
           if (this.selectedFolderIndex === index)
-            this.selectedFolderIndex--;
+            this.onFolderClick(index - 1);
         }
       );
 

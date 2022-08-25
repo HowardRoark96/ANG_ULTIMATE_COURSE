@@ -3,7 +3,7 @@
   [class.selector__expanded]="isExpanded"
   (click)="onClickExpand($event)">
 
-  <p>{{ selectedItem[displayItemProp] }}</p>
+  <p>{{ selectedItem[displayProp] }}</p>
 
   <div>
     <mat-icon
@@ -30,7 +30,7 @@
       class="selector__item"
       (click)="onSelectItem(item, i)"
     >
-      {{ item[displayItemProp] }}
+      {{ item[displayProp] }}
     </li>
   </ul>
 </div>

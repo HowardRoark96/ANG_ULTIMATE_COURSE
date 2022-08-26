@@ -4,6 +4,7 @@ import { EmailService } from '../services/email.service';
 import { map } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../auth-form/interfaces/user.interface';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class MainComponent implements OnInit {
   folders: Folder[];
   selectedFolderIndex: number = 0;
+  user: User;
 
   constructor(
     private router: Router,
@@ -24,6 +26,8 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.user = this.authService.user.getValue();
+
     this.route.data
       .pipe(map(data => data?.['folders']))
       .subscribe(data => {

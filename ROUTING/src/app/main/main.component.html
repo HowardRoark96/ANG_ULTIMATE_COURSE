@@ -1,10 +1,20 @@
 <div class="main">
   <header class="main__header">
-    <img
-      class="logo"
-      src="../assets/email-logo.svg"
-      alt="Logo">
-    <div class="title">Email manager</div>
+    <div class="title">
+      <img
+        class="logo"
+        src="../assets/email-logo.svg"
+        alt="Logo">
+      Email manager
+    </div>
+
+    <div class="user">
+      <i
+        class="logout"
+        title="Log out">
+      </i>
+      {{user.login}}
+    </div>
   </header>
   <div class="main__content">
 

@@ -10,6 +10,7 @@
 
     <div class="user">
       <i
+        (click)="onLogout()"
         class="logout"
         title="Log out">
       </i>
@@ -37,7 +38,7 @@
         {{ folder.name }}
         <mat-icon
           *ngIf="folder.canDelete"
-          (click)="deleteFolder($event, i)"
+          (click)="onDeleteFolder($event, i)"
           class="folder-control"
           title="Delete folder">
           clear

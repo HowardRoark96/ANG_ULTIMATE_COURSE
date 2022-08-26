@@ -21,7 +21,7 @@ export class AuthService {
     return this.http.get<any>(`${AuthService.url}/${user.login}.json`)
       .pipe(
         map(res => {
-          return res ? Object.keys(res).map(key => ({...res[key], id: key})) : null;
+          return res ? Object.keys(res).map(key => ({...res[key], id: key}))[0] as User : null;
         })
       );
   }
@@ -34,13 +34,7 @@ export class AuthService {
 
     return this.http.post<any>(`${AuthService.url}/${user.login}.json`, params)
       .pipe(
-        map(res => {
-          console.log('LOGIN REQUEST: ', res);
-
-          this.setCurrentUser({...params, id: res.name});
-
-          return res;
-        })
+        map(res => ({...params, id: res.name}))
       );
   }
 

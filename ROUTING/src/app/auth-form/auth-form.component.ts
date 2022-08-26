@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { forkJoin, map, of, switchMap } from 'rxjs';
+import { of, switchMap } from 'rxjs';
 import { User } from './interfaces/user.interface';
 import { Router } from '@angular/router';
 import { EmailService } from '../services/email.service';
@@ -99,17 +99,22 @@ export class AuthFormComponent implements OnInit {
             return of();
           }
 
-          if (res[0].password !== user.password) {
+          if (res.password !== user.password) {
             this.form.get('password')?.setErrors({ passwordIncorrect: true });
             return of();
           }
 
-          return res;
+          return of(res);
         })
-      )
-      .subscribe(res => {
-        this.authService.setCurrentUser(res as User);
-        this.router.navigate(['main']);
+      ).subscribe(user => {
+        this.authService.setCurrentUser(user as User);
+
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify({ login: (user as User).login, password: (user as User).password, id: (user as User).id})
+        );
+
+        this.router.navigate(['/folder']);
       });
   }
 
@@ -129,9 +134,15 @@ export class AuthFormComponent implements OnInit {
 
           return this.authService.signUp(user);
         })
-      )
-      .subscribe(() => {
-        this.emailService.initNewUser().subscribe(() => this.router.navigate(['main']));
+      ).subscribe((user: User) => {
+        this.authService.setCurrentUser(user as User);
+
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify({ login: user.login, password: user.password, id: user.id})
+        );
+
+        this.emailService.initNewUser().subscribe(() => this.router.navigate(['folder/']));
       });
   }
 

@@ -30,22 +30,19 @@ export class MainComponent implements OnInit {
 
     this.route.data
       .pipe(map(data => data?.['folders']))
-      .subscribe(data => {
-        this.folders = data;
-        this.router.navigate([`folder/${this.folders[0].entityId}`], { relativeTo: this.route });
-      });
+      .subscribe(data => this.folders = data);
   }
 
   onFolderClick(index: number) {
     this.selectedFolderIndex = index;
-    this.router.navigate(['folder/' + this.folders[index].entityId], { relativeTo: this.route });
+    this.router.navigate(['folder/' + this.folders[index].entityId]);
   }
 
   onFolderCreated(folder: Folder) {
     this.folders.push(folder);
   }
 
-  deleteFolder(event: Event, index: number) {
+  onDeleteFolder(event: Event, index: number) {
     this.emailService.deleteFolderEntityById(this.folders[index].entityId)
       .subscribe(() => {
           this.folders.splice(index, 1);
@@ -57,5 +54,13 @@ export class MainComponent implements OnInit {
 
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  onLogout() {
+    this.authService.user.next({login: '', password: ''});
+
+    localStorage.clear();
+
+    this.router.navigate(['authorization']);
   }
 }

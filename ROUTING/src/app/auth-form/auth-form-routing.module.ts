@@ -5,7 +5,7 @@ import { AuthFormComponent } from './auth-form.component';
 
 const ROUTES: Routes = [
   {
-    path: 'login',
+    path: 'authorization',
     component: AuthFormComponent,
   }
 ];

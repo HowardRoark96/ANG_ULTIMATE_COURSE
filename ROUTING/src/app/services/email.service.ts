@@ -174,14 +174,18 @@ export class EmailService {
       );
   }
 
-  getFolderById(id: string): Observable<FolderEntity> {
+  getFolderById(id: string): Observable<FolderEntity | null> {
     return this.http
       .get<FolderEntity>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${id}.json`)
       .pipe(
         map((folder: FolderEntity) => {
-          folder.mails = folder.mails ? this.getConvertedObjectArray(folder.mails) as Mail[] : [];
+          if (folder) {
+            folder.mails = folder.mails ? this.getConvertedObjectArray(folder.mails) as Mail[] : [];
 
-          return ({...folder, id});
+            return ({...folder, id});
+          }
+
+          return null;
         })
       );
   }

@@ -8,14 +8,15 @@ import { MailBoxResolve } from './resolvers/mail-box.resolve';
 
 const ROUTES: Routes = [
   {
-    path: 'main',
+    path: 'folder/:id',
     component: MainComponent,
     resolve: {
       folders:  MainFolderResolve
     },
     children: [
       {
-        path: 'folder/:id',
+        path: '',
+        pathMatch: 'full',
         component: MailBoxComponent,
         resolve: {
           folder: MailBoxResolve
@@ -25,7 +26,7 @@ const ROUTES: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'main'
+    redirectTo: 'folder/'
   }
 ];
 

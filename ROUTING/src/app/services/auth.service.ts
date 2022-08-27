@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { User } from '../auth-form/interfaces/user.interface';
 
 @Injectable(
@@ -34,7 +34,12 @@ export class AuthService {
 
     return this.http.post<any>(`${AuthService.url}/${user.login}.json`, params)
       .pipe(
-        map(res => ({...params, id: res.name}))
+        switchMap(res => {
+          params['id'] = res.name;
+
+          return this.http.post<any>(`${AuthService.url}/users.json`,  {login: params.login, id: res.name});
+        }),
+        map(res => params)
       );
   }
 

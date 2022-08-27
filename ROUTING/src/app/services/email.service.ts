@@ -157,7 +157,10 @@ export class EmailService {
     return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${folderId}/mails/${mailId}.json`);
   }
 
-  sendMail(fromUser: string, toUser: User, text: string): Observable<any> {
+  sendMail(fromUser: string | null, toUser: User, text: string): Observable<any> {
+    if(!fromUser)
+      fromUser = this.authService.user.getValue().login;
+
     const params = {
       from: fromUser,
       text,
@@ -201,5 +204,16 @@ export class EmailService {
   makeAsUnread(folderEntityId: string, mailId: string, isReaden: boolean): Observable<never> {
     return this.http
       .put<never>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${folderEntityId}/mails/${mailId}/isReaden.json`, isReaden);
+  }
+
+  getUsersByLogin(login: string): Observable<User[]> {
+    return this.http.get<User[]>(`${EmailService.url}/${login}.json`);
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${EmailService.url}/users.json`)
+      .pipe(
+        map(data => this.getConvertedObjectArrayWithoutId(data) as User[])
+      );
   }
 }

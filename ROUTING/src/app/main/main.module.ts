@@ -2,16 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './main.component';
 import { MailBoxComponent } from './components/mail-box/mail-box.component';
 import { MailComponent } from './components/mail-box/components/mail/mail.component';
-import { HelperBoxComponent } from './components/helper-box/helper-box.component';
+import { MessengerBoxComponent } from './components/messenger-box/messenger-box.component';
 import {
   CreateFolderBtnComponent
 } from './components/mail-box/components/create-folder-btn/create-folder-btn.component';
 import { MainFolderResolve } from '../resolvers/main-folder.resolve';
 import { MailBoxResolve } from '../resolvers/mail-box.resolve';
+import { SearchComponent } from './components/messenger-box/components/search/search.component';
 
 const routes: Routes = [];
 
@@ -20,14 +21,16 @@ const routes: Routes = [];
     CommonModule,
     RouterModule.forRoot(routes),
     MatIconModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
     MainComponent,
     MailBoxComponent,
     MailComponent,
     CreateFolderBtnComponent,
-    HelperBoxComponent
+    MessengerBoxComponent,
+    SearchComponent
   ],
   providers: [
     MainFolderResolve,

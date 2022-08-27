@@ -1,7 +1,7 @@
 import { Component, ElementRef, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-const COUNTER_CONTROL_ACCESSOR = {
+const CONTROL_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => SelectorComponent),
   multi: true
@@ -9,7 +9,7 @@ const COUNTER_CONTROL_ACCESSOR = {
 
 @Component({
   selector: 'app-selector',
-  providers: [COUNTER_CONTROL_ACCESSOR],
+  providers: [CONTROL_ACCESSOR],
   templateUrl: './selector.component.html',
   styleUrls: ['./selector.component.scss']
 })
@@ -39,7 +39,6 @@ export class SelectorComponent implements ControlValueAccessor {
     else {
       this.selectedItem = this.itemList[value];
     }
-
   }
 
   constructor(

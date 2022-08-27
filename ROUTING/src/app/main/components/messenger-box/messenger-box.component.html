@@ -1,0 +1,83 @@
+<div class="messenger">
+  <div class="messenger__title">
+    Send message
+  </div>
+  <div class="messenger__body">
+
+    <form
+      [formGroup]="form"
+      (submit)="senMail()">
+
+      <div
+        class="messenger__body__to"
+        [style.margin-bottom]="isUserSelected ? '2px' : '10px'"
+      >
+        <app-search
+          btnTitle="To"
+          displayProp="login"
+          selectProp="login"
+          noItemFoundTitle="No user was found."
+          formControlName="to"
+          [searchFn]="searchUser.bind(this)">
+        </app-search>
+      </div>
+      <div
+        class="error"
+        *ngIf="isUserSelected">
+        User is required.
+      </div>
+
+      <div class="messenger__body__theme">
+        <label
+          class="btn"
+          [for]="'theme'">
+          Theme
+        </label>
+        <input
+          type="text"
+          id="theme"
+          autocomplete="off"
+          formControlName="theme">
+      </div>
+      <div
+        class="error"
+        *ngIf="isThemeOnlySpaces">
+        Only spaces not allowed.
+      </div>
+
+      <textarea
+        class="messenger__body__text"
+        [style.margin-bottom]="isTextEmpty || isTextOnlySpaces ? '2px' : '10px'"
+        formControlName="text">
+        text
+      </textarea>
+      <div
+        class="error"
+        *ngIf="isTextEmpty">
+        Text is required.
+      </div>
+      <div
+        class="error"
+        *ngIf="isTextOnlySpaces">
+        Only spaces not allowed.
+      </div>
+
+      <div class="messenger__actions">
+        <button
+          type="submit"
+          title="Send mail"
+          class="btn">
+          Send mail
+        </button>
+        <button
+          (click)="resetForm()"
+          type="button"
+          title="Reset form"
+          class="btn">
+          Reset
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

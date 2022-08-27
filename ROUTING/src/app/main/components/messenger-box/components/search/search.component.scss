@@ -1,0 +1,72 @@
+@import "src/styles/colors";
+:host {
+  position: relative;
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  padding: 8px;
+  background-color: $color_2;
+}
+
+.search {
+  flex: 1 0;
+  width: 100%;
+  padding: 5px;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+
+  &:focus {
+    outline: none;
+    border-bottom: 1px solid $color_4;
+  }
+}
+
+.search-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 100%;
+  left: -1px;
+  right: -1px;
+  z-index: 10;
+  margin-top: 2px;
+  border: 1px solid $color_4;
+
+  .item {
+    padding: 10px;
+    background-color: $color_white;
+
+    &:hover:not(.no-item) {
+      cursor: pointer;
+      background-color: $color_3;
+    }
+  }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  padding: 8px 15px;
+  font-size: 16px;
+  background-color: $color_2;
+  border: none;
+
+  &:hover {
+    background-color: $color_3;
+  }
+}
+
+.icon-delete {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}

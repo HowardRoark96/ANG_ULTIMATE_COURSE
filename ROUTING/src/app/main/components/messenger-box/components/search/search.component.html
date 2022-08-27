@@ -1,0 +1,48 @@
+<label
+  class="btn"
+  [for]="'search' + btnTitle">
+  {{btnTitle}}
+</label>
+
+<div
+  class="user"
+  *ngFor="let item of selectedItems; let i = index">
+  {{item[displayProp]}}
+  <mat-icon
+    (click)="onDeleteUser($event, i)"
+    class="icon-delete"
+    title="Delete user">
+    clear
+  </mat-icon>
+</div>
+
+<input
+  (input)="searchItem()"
+  (focus)="onFocus()"
+  [(ngModel)]="inputValue"
+  [id]="'search' + btnTitle"
+  autocomplete="off"
+  class="search"
+  type="text">
+
+<ul class="search-list"
+    *ngIf="isSearchResShown"
+    [style.max-height]="maxHeightDropdown || 'unset'"
+    [style.overflow]="maxHeightDropdown ? 'auto' : 'unset'"
+    (document:click)="onClickOutside($event)">
+  <ng-container *ngIf="searchResult.length > 0; else noItemFound">
+    <li
+      *ngFor="let item of searchResult; let i = index"
+      class="item"
+      (click)="onSelectItem(item)"
+    >
+      {{ item[displayProp] }}
+    </li>
+  </ng-container>
+</ul>
+
+<ng-template #noItemFound>
+  <span class="item no-item">
+    {{noItemFoundTitle}}
+  </span>
+</ng-template>

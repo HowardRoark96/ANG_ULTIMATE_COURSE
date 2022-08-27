@@ -69,6 +69,10 @@
     &__content {
       padding-left: 35px;
 
+      .mail-theme {
+        margin-bottom: 10px;
+      }
+
       .mail-text {
         height: 33px;
         line-height: 2;

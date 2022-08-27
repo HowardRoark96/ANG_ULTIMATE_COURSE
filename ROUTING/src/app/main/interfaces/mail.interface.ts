@@ -1,7 +1,8 @@
 export interface Mail {
   from: string,
   text: string,
-  id:string,
+  theme?: string,
+  id: string,
   isReaden: boolean,
   receivingTime: number
 }

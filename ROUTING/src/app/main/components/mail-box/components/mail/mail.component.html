@@ -35,6 +35,10 @@
   </div>
 
   <div class="mail__content">
+    <div class="mail-theme">
+      <span>Theme:</span>
+      {{ mail.theme || 'no theme' }}
+    </div>
     <p class="mail-text"
        [ngClass]="{'mail-text__selected': isMailSelected}"
        [innerHTML]="mail.text">

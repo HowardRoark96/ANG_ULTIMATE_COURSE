@@ -76,7 +76,12 @@ export class MessengerBoxComponent implements OnInit{
       const users = this.form.get('to')?.value as unknown as User[];
 
       users?.forEach(user => {
-        this.emailService.sendMail(null, user, this.form.get('text')?.value as string).subscribe();
+        this.emailService.sendMail(
+          null,
+          user,
+          this.form.get('text')?.value as string,
+          this.form.get('theme')?.value as string
+        ).subscribe();
       });
 
       this.showError = false;

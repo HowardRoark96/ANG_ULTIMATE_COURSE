@@ -55,14 +55,16 @@ export class EmailService {
         switchMap(() => {
           return forkJoin([
             this.sendMail(
-              'System Info',
+              'System',
               this.authService.user.value,
-              textAboutApplication
+              textAboutApplication,
+              'System information.'
             ),
             this.sendMail(
-              'System Info',
+              'System',
               this.authService.user.value,
-              textAccountInformation
+              textAccountInformation,
+              'System information.'
             )
           ]);
         })
@@ -157,13 +159,14 @@ export class EmailService {
     return this.http.delete<void>(`${EmailService.url}/${this.authService.user.value.login}/${this.authService.user.value.id}/foldersEntities/${folderId}/mails/${mailId}.json`);
   }
 
-  sendMail(fromUser: string | null, toUser: User, text: string): Observable<any> {
+  sendMail(fromUser: string | null, toUser: User, text: string, theme?: string): Observable<any> {
     if(!fromUser)
       fromUser = this.authService.user.getValue().login;
 
     const params = {
       from: fromUser,
       text,
+      theme,
       isReaden: false,
       receivingTime: 12345678
     };

@@ -26,17 +26,17 @@
         width: 25px;
         margin-right: 5px;
         bottom: -1px;
-        background-image: url(/assets/email-logo.svg);
+        background-image: url('/assets/email-logo.svg');
         background-repeat: no-repeat;
 
         &__active {
           bottom: 4px;
-          background-image: url(/assets/email-message.svg);
+          background-image: url('/assets/email-message.svg');
         }
 
         &__not-readen {
           bottom: -1px;
-          background-image: url(/assets/email-folder-icon.svg);
+          background-image: url('/assets/email-folder-icon.svg');
         }
       }
 
@@ -44,6 +44,9 @@
         padding-left: 35px;
         font-size: 20px;
         color: $font_color_medium;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       .mail-control {
@@ -52,7 +55,7 @@
         color: $color_5;
 
         &:first-of-type {
-          margin-left: 50px;
+          margin-left: 10px;
         }
 
         &:hover {

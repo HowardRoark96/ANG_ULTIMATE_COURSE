@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   width: 600px;
+  height: 100%;
   padding: 15px;
   border: 1px dashed $color_3;
   box-sizing: border-box;
@@ -54,12 +55,20 @@
         &:focus {
           outline: 2px solid $color_3;
         }
+
+        @include md {
+          min-height: 100px;
+        }
       }
     }
   }
 
   @include md {
     width: 100%;
+
+    .btn {
+      padding: 10px 20px;
+    }
   }
 }
 

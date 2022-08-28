@@ -1,7 +1,9 @@
 @import "../../../../styles/colors";
 
 :host {
+  display: flex;
   flex: 1 0;
+  height: 100%;
 }
 
 .mail-box {
@@ -10,12 +12,17 @@
   align-items: stretch;
   justify-content: flex-start;
   max-height: 100%;
+  width: 100%;
   overflow-y: auto;
 
   &__title {
+    flex-shrink: 0;
     padding: 20px;
     font-size: 30px;
     border-bottom: 2px solid $color_3;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &__content {

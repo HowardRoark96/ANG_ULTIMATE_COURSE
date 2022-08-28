@@ -40,6 +40,11 @@ body {
 .dialog-container {
   max-height: 80vh;
   background-color: transparent;
+  overflow: auto;
+
+  @include md {
+    width: 100%;
+  }
 
   mat-dialog-container {
     position: relative;

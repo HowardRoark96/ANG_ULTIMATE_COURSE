@@ -39,6 +39,9 @@ $expander_color: $color_9;
     padding: 5px 10px;
     cursor: pointer;
     background-color: $item_background_color1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     &:hover {
       background-color: $item_hover_background_color;

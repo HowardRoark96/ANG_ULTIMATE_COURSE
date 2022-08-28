@@ -17,6 +17,7 @@
           displayProp="login"
           selectProp="login"
           noItemFoundTitle="No user was found."
+          [isParentFormReset]="formReset"
           formControlName="to"
           [searchFn]="searchUser.bind(this)">
         </app-search>

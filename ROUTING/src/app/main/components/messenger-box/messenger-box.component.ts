@@ -2,15 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { EmailService } from '../../../services/email.service';
 import { User } from '../../../auth-form/interfaces/user.interface';
 import { FormBuilder, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { SuccessModalComponent } from '../../../modals/success-modal/success-modal.component';
 
 @Component({
   selector: 'app-messenger-box',
   styleUrls: ['messenger-box.component.scss'],
   templateUrl: 'messenger-box.component.html'
 })
-export class MessengerBoxComponent implements OnInit{
+export class MessengerBoxComponent implements OnInit {
   users: User[];
   showError: boolean = false;
+  formReset: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   form = this.fb.group({
     to: [[], [Validators.required]],
@@ -48,8 +52,9 @@ export class MessengerBoxComponent implements OnInit{
 
   constructor(
     private emailService: EmailService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
     this.emailService.getAllUsers()
@@ -68,7 +73,8 @@ export class MessengerBoxComponent implements OnInit{
 
   resetForm() {
     this.showError = false;
-    this.form.reset();
+    this.form.reset({ to: [] });
+    this.formReset.next(true);
   }
 
   senMail() {
@@ -81,7 +87,24 @@ export class MessengerBoxComponent implements OnInit{
           user,
           this.form.get('text')?.value as string,
           this.form.get('theme')?.value as string
-        ).subscribe();
+        ).subscribe(() => {
+          this.form.reset({ to: [] });
+          this.formReset.next(true);
+
+          const dialogConfig = new MatDialogConfig();
+
+          dialogConfig.panelClass = 'dialog-container';
+          dialogConfig.position = { top: '35px'};
+          dialogConfig.hasBackdrop = false;
+          dialogConfig.enterAnimationDuration = '500ms';
+          dialogConfig.exitAnimationDuration = '500ms';
+
+          dialogConfig.data = {
+            info: 'Mail sent successfully.'
+          };
+
+          this.dialog.open(SuccessModalComponent, dialogConfig);
+        });
       });
 
       this.showError = false;

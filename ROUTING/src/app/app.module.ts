@@ -9,18 +9,21 @@ import { AuthFormModule } from './auth-form/auth-form.module';
 import { MainModule } from './main/main.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MoveMailModalComponent } from './modals/move-mail-modal/move-mail-modal.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SelectorComponent } from './components/selector/selector.component';
+import { SuccessModalComponent } from './modals/success-modal/success-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MoveMailModalComponent,
+    SuccessModalComponent,
     SelectorComponent
   ],
   imports: [
     BrowserModule,
     NoopAnimationsModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -34,7 +37,8 @@ import { SelectorComponent } from './components/selector/selector.component';
     AppComponent
   ],
   entryComponents: [
-    MoveMailModalComponent
+    MoveMailModalComponent,
+    SuccessModalComponent
   ]
 })
 export class AppModule { }

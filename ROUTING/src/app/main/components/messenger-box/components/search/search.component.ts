@@ -1,6 +1,6 @@
 import { Component, ElementRef, forwardRef, Input, OnInit } from '@angular/core';
-import { User } from '../../../../../auth-form/interfaces/user.interface';
-import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 
 const CONTROL_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -14,7 +14,7 @@ const CONTROL_ACCESSOR = {
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements ControlValueAccessor {
+export class SearchComponent implements OnInit, ControlValueAccessor {
   private onModelChange: Function;
   private onTouch: Function;
 
@@ -23,6 +23,7 @@ export class SearchComponent implements ControlValueAccessor {
   @Input() displayProp: string = 'name';
   @Input() noItemFoundTitle: string = 'No item was found.';
   @Input() searchFn: Function;
+  @Input() isParentFormReset: BehaviorSubject<boolean>;
 
   selectedItems: any[] = [];
   inputValue: string = '';
@@ -49,7 +50,14 @@ export class SearchComponent implements ControlValueAccessor {
   constructor(
     private fb: FormBuilder,
     private elRef: ElementRef
-  ) {}
+  ) { }
+
+  ngOnInit() {
+    this.isParentFormReset.subscribe(value => {
+      if(value)
+        this.inputValue = '';
+    })
+  }
 
   searchItem() {
     if(this.inputValue) {

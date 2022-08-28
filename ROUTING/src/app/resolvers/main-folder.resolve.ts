@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Folder } from '../main/interfaces/folder.interface';
 import { EmailService } from '../services/email.service';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, map, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { User } from '../auth-form/interfaces/user.interface';
 
@@ -26,6 +26,13 @@ export class MainFolderResolve implements Resolve<Folder[] | never> {
 
     this.authService.setCurrentUser(JSON.parse(currentUser) as User);
 
-    return this.emailService.getAllUserFolders(this.authService.user.value);
+    return this.emailService.getAllUserFolders(this.authService.user.value)
+      .pipe(
+      map((data: Folder[]) => {
+        this.emailService.setCurrentFolders(data);
+
+        return data;
+      })
+    );
   }
 }

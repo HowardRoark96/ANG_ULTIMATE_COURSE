@@ -111,17 +111,14 @@ export class EmailService {
   }
 
   getAllUserFolders(user: User): Observable<Folder[]> {
-    return this.http
-      .get<Folder[]>(`${EmailService.url}/${user.login}/${user.id}/folders.json`)
+    return this.http.get<Folder[]>(`${EmailService.url}/${user.login}/${user.id}/folders.json`)
       .pipe(
-        map((data: Folder[]) => {
-          const folders = this.getConvertedObjectArray(data) as Folder[];
-
-          this.folders.next(folders);
-
-          return folders;
-        })
+        map((data: Folder[]) => this.getConvertedObjectArray(data) as Folder[])
       );
+  }
+
+  setCurrentFolders(data: Folder[]) {
+    this.folders.next(data);
   }
 
   checkFolderName(name: string): Observable<boolean> {

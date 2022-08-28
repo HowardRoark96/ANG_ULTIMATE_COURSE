@@ -1,0 +1,12 @@
+@import '../../../styles/colors';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border: 1px dashed $color_3;
+
+  .mat-dialog-info{
+    margin-bottom: 20px;
+  }
+}

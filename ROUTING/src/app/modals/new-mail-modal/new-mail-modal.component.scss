@@ -1,4 +1,5 @@
 @import "../../../styles/colors";
+@import "../../../styles/media-queries";
 
 :host {
   display: flex;
@@ -6,8 +7,12 @@
   width: 600px;
   padding: 15px;
   border: 1px dashed $color_3;
+  box-sizing: border-box;
 
   mat-dialog-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
     .mail {
       &__to {
@@ -37,7 +42,7 @@
       }
 
       &__text {
-        display: block;
+        flex: 1;
         width: 100%;
         min-height: 200px;
         margin-bottom: 10px;
@@ -51,6 +56,10 @@
         }
       }
     }
+  }
+
+  @include md {
+    width: 100%;
   }
 }
 

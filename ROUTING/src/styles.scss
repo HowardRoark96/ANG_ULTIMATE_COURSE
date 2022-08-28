@@ -1,5 +1,6 @@
 @import "reset";
 @import "styles/colors";
+@import "styles/media-queries";
 
 html,
 body {
@@ -37,6 +38,7 @@ body {
 }
 
 .dialog-container {
+  max-height: 80vh;
   background-color: transparent;
 
   mat-dialog-container {

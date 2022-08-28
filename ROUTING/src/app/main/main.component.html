@@ -47,7 +47,7 @@
           class="icon"
           src="assets/email-folder-icon.svg"
           alt="Folder icon">
-        {{ folder.name }}
+        <span>{{ folder.name }}</span>
         <mat-icon
           *ngIf="folder.canDelete"
           (click)="onDeleteFolder($event, i)"

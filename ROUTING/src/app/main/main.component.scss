@@ -1,10 +1,10 @@
 @import "src/styles/colors";
+@import "src/styles/media-queries";
 
 .main {
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: 100%;
   overflow-y: hidden;
 
   .main__header {
@@ -32,7 +32,6 @@
       justify-content: center;
       padding: 5px 15px;
 
-
       &:hover {
         background-color: $color_2;
       }
@@ -59,12 +58,18 @@
 
     .main__content__nav-menu {
       display: flex;
-      flex: 0 0 250px;
       flex-direction: column;
       align-items: stretch;
       justify-content: flex-start;
+      min-width: 320px;
+      max-width: 400px;
       border-right: 2px solid $color_7;
       background-color: $color_3;
+
+      @include md {
+        min-width: 50vw;
+        max-width: unset;
+      }
 
       .folder {
         position: relative;
@@ -76,6 +81,13 @@
         &:hover {
           transition: background-color .2s linear;
           background-color: $color_4;
+        }
+
+        & span {
+          flex: auto;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
 
         &__active {
@@ -94,7 +106,9 @@
         }
 
         .folder-control {
-          margin-left: auto;
+          min-width: 24px;
+          min-height: 24px;
+          margin-left: 5px;
         }
       }
 
@@ -107,6 +121,12 @@
 
     .main__content__body {
       flex: 1 0;
+      min-width: 320px;
+
+      @include md {
+        min-width: 100vw;
+      }
+
     }
   }
 }

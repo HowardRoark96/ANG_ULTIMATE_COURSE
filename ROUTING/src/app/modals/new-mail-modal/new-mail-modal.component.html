@@ -1,0 +1,90 @@
+<h3 mat-dialog-title>{{title}}</h3>
+
+<mat-dialog-content >
+
+  <form
+    [formGroup]="form"
+    (submit)="senMail()">
+
+    <div
+      class="mail__to"
+      [style.margin-bottom]="isUserSelected ? '2px' : '10px'">
+      <app-search
+        btnTitle="To"
+        displayProp="login"
+        selectProp="login"
+        noItemFoundTitle="No user was found."
+        [isParentFormReset]="formReset"
+        formControlName="to"
+        [searchFn]="searchUser.bind(this)">
+      </app-search>
+    </div>
+    <div
+      class="error"
+      *ngIf="isUserSelected">
+      User is required.
+    </div>
+
+    <div
+      class="mail__theme"
+      [style.margin-bottom]="isThemeOnlySpaces ? '2px' : '10px'">
+      <label
+        class="btn"
+        [for]="'theme'">
+        Theme
+      </label>
+      <input
+        type="text"
+        id="theme"
+        autocomplete="off"
+        formControlName="theme">
+    </div>
+    <div
+      class="error"
+      *ngIf="isThemeOnlySpaces">
+      Only spaces not allowed.
+    </div>
+
+    <textarea
+      class="mail__text"
+      [style.margin-bottom]="isTextEmpty || isTextOnlySpaces ? '2px' : '10px'"
+      formControlName="text">
+    </textarea>
+    <div
+      class="error"
+      *ngIf="isTextEmpty">
+      Text is required.
+    </div>
+    <div
+      class="error"
+      *ngIf="isTextOnlySpaces">
+      Only spaces not allowed.
+    </div>
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    type="submit"
+    title="Send mail"
+    class="btn btn-save"
+    (click)="senMail()">
+    Send mail
+  </button>
+  <button
+    type="button"
+    title="Close window"
+    class="btn btn-close"
+    (click)="close()">
+    Close
+  </button>
+</mat-dialog-actions>
+
+<mat-icon
+  (click)="close()"
+  class="icon-exit"
+  title="Close modal">
+  clear
+</mat-icon>

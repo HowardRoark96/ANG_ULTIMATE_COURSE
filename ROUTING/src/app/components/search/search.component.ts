@@ -78,6 +78,7 @@ export class SearchComponent implements OnInit, ControlValueAccessor {
 
   onDeleteUser(event: Event, index: number) {
     this.selectedItems.splice(index, 1);
+    this.elRef.nativeElement.querySelector('.search').focus();
 
     this.onModelChange(this.selectedItems);
     this.onTouch();
@@ -105,8 +106,9 @@ export class SearchComponent implements OnInit, ControlValueAccessor {
 
   onSelectItem(item: any) {
     this.selectedItems.push(item);
-
     this.isSearchResShown = false;
+    this.inputValue = '';
+    this.elRef.nativeElement.querySelector('.search').focus();
 
     this.onModelChange(this.selectedItems);
     this.onTouch();

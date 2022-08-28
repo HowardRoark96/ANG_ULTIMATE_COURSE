@@ -1,4 +1,4 @@
-@import "src/styles/colors";
+@import "../../../styles/colors";
 :host {
   position: relative;
   width: 100%;
@@ -57,7 +57,7 @@
   margin-right: 5px;
   padding: 8px 15px;
   font-size: 16px;
-  background-color: $color_2;
+  background-color: $color_1;
   border: none;
 
   &:hover {

@@ -5,6 +5,9 @@ import { map } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../auth-form/interfaces/user.interface';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MoveMailModalComponent } from '../modals/move-mail-modal/move-mail-modal.component';
+import { NewMailModalComponent } from '../modals/new-mail-modal/new-mail-modal.component';
 
 
 @Component({
@@ -21,9 +24,9 @@ export class MainComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private emailService: EmailService
-  ) {
-  }
+    private emailService: EmailService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit() {
     this.user = this.authService.user.getValue();
@@ -62,5 +65,18 @@ export class MainComponent implements OnInit {
     localStorage.clear();
 
     this.router.navigate(['authorization']);
+  }
+
+  onNewMailClicked() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.panelClass = 'dialog-container';
+    dialogConfig.autoFocus = false;
+
+    dialogConfig.data = {
+      title: 'Send message.'
+    };
+
+    const dialogRef = this.dialog.open(NewMailModalComponent, dialogConfig);
   }
 }

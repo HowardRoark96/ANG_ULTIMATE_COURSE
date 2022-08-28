@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { FolderEntity } from '../main/interfaces/folder.interface';
 import { EmailService } from '../services/email.service';
-import { EMPTY, map, Observable, of, switchMap } from 'rxjs';
+import { EMPTY, Observable, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class MailBoxResolve implements Resolve<FolderEntity | never> {

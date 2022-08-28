@@ -20,6 +20,16 @@
   <div class="main__content">
 
     <nav class="main__content__nav-menu">
+      <button
+        (click)="onNewMailClicked()"
+        class="btn"
+        title="New mail">
+        <img
+          class="icon"
+          src="assets/email-new-mail.svg"
+          alt="New mail">
+        New mail
+      </button>
       <app-create-folder-btn
         (folderCreated)="onFolderCreated($event)">
       </app-create-folder-btn>
@@ -29,10 +39,12 @@
          (click)="onFolderClick(i)">
         <img
           *ngIf="!folder.canDelete"
+          class="icon"
           src="assets/email-folder-system.svg"
           alt="Folder icon">
         <img
           *ngIf="folder.canDelete"
+          class="icon"
           src="assets/email-folder-icon.svg"
           alt="Folder icon">
         {{ folder.name }}
@@ -47,13 +59,7 @@
     </nav>
 
     <div class="main__content__body">
-
-      <div class="app-mail-box">
-        <router-outlet></router-outlet>
-      </div>
-
-      <app-messenger-box></app-messenger-box>
-
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

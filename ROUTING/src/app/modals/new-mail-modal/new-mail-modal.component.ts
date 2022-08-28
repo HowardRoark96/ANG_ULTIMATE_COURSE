@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { EmailService } from '../../../services/email.service';
-import { User } from '../../../auth-form/interfaces/user.interface';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { EmailService } from '../../services/email.service';
+import { User } from '../../auth-form/interfaces/user.interface';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SuccessModalComponent } from '../../../modals/success-modal/success-modal.component';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { SuccessModalComponent } from '../success-modal/success-modal.component';
 
 @Component({
-  selector: 'app-messenger-box',
-  styleUrls: ['messenger-box.component.scss'],
-  templateUrl: 'messenger-box.component.html'
+  selector: 'app-new-mail-modal',
+  styleUrls: ['new-mail-modal.component.scss'],
+  templateUrl: 'new-mail-modal.component.html'
 })
-export class MessengerBoxComponent implements OnInit {
+export class NewMailModalComponent implements OnInit {
+  title: string;
   users: User[];
   showError: boolean = false;
   formReset: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -53,8 +54,12 @@ export class MessengerBoxComponent implements OnInit {
   constructor(
     private emailService: EmailService,
     private fb: FormBuilder,
-    private dialog: MatDialog
-  ) { }
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<NewMailModalComponent>,
+    @Inject(MAT_DIALOG_DATA) data: any
+  ) {
+    this.title = data.title;
+  }
 
   ngOnInit(): void {
     this.emailService.getAllUsers()
@@ -71,12 +76,6 @@ export class MessengerBoxComponent implements OnInit {
     return searchResult;
   }
 
-  resetForm() {
-    this.showError = false;
-    this.form.reset({ to: [] });
-    this.formReset.next(true);
-  }
-
   senMail() {
     if (this.form.valid) {
       const users = this.form.get('to')?.value as unknown as User[];
@@ -88,8 +87,7 @@ export class MessengerBoxComponent implements OnInit {
           this.form.get('text')?.value as string,
           this.form.get('theme')?.value as string
         ).subscribe(() => {
-          this.form.reset({ to: [] });
-          this.formReset.next(true);
+          this.close();
 
           const dialogConfig = new MatDialogConfig();
 
@@ -112,5 +110,9 @@ export class MessengerBoxComponent implements OnInit {
     else {
       this.showError = true;
     }
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

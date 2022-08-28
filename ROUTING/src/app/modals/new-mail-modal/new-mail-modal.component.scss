@@ -1,0 +1,73 @@
+@import "../../../styles/colors";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  padding: 15px;
+  border: 1px dashed $color_3;
+
+  mat-dialog-content {
+
+    .mail {
+      &__to {
+        display: flex;
+        margin-bottom: 10px;
+      }
+
+      &__theme {
+        display: flex;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+
+        input {
+          flex: 1 0;
+          width: 100%;
+          padding: 5px;
+          font-size: 16px;
+          background-color: transparent;
+          border: none;
+          border-bottom: 1px solid transparent;
+
+          &:focus {
+            outline: none;
+            border-bottom: 1px solid $color_4;
+          }
+        }
+      }
+
+      &__text {
+        display: block;
+        width: 100%;
+        min-height: 200px;
+        margin-bottom: 10px;
+        resize: none;
+        font-size: 16px;
+        border: 1px solid $color_7;
+        box-sizing: border-box;
+
+        &:focus {
+          outline: 2px solid $color_3;
+        }
+      }
+    }
+  }
+}
+
+.btn {
+  width: 100%;
+  align-self: end;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  background-color: $color_1;
+  font-size: 16px;
+
+  &:hover:not(:disabled) {
+    background-color: $color_3;
+  }
+
+  &:focus {
+    outline: 1px solid $color_3;
+  }
+}

@@ -14,12 +14,12 @@ export class SuccessModalComponent implements OnInit {
     private dialogRef: MatDialogRef<SuccessModalComponent>,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
-    this.title = data.title || 'Success';
-    this.info = data.info || 'Info';
+    this.title = data.title || 'Success.';
+    this.info = data.info || 'Info.';
   }
 
   ngOnInit() {
-    setTimeout( () => this.close(), 2500);
+    setTimeout( () => this.close(), 3000);
   }
 
   close() {

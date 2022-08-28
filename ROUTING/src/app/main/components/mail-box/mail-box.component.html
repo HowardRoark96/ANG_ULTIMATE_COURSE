@@ -4,22 +4,24 @@
     {{ folder.name }}
   </div>
 
-  <div
-    *ngIf="!folder.mails || folder.mails.length === 0; else mailTmpl"
-    class="mail-box__no-mails">
-    <img
-      src="../../../../assets/email-no-mail.svg"
-      alt="No mail found">
-    No mails.
+  <div class="mail-box__content">
+    <div
+      *ngIf="!folder.mails || folder.mails.length === 0; else mailTmpl"
+      class="mail-box__no-mails">
+      <img
+        src="../../../../assets/email-no-mail.svg"
+        alt="No mail found">
+      No mails.
+    </div>
   </div>
-
-  <ng-template #mailTmpl>
-    <app-mail
-      class="mail-box__mail"
-      *ngFor="let mail of folder.mails; let i = index"
-      [mail]="mail"
-      (onMailMoveOrDelete)="onMailMoveOrDelete(i)"
-      [folderId]="folder.id">
-    </app-mail>
-  </ng-template>
 </div>
+
+<ng-template #mailTmpl>
+  <app-mail
+    class="mail-box__mail"
+    *ngFor="let mail of folder.mails; let i = index"
+    [mail]="mail"
+    (onMailMoveOrDelete)="onMailMoveOrDelete(i)"
+    [folderId]="folder.id">
+  </app-mail>
+</ng-template>

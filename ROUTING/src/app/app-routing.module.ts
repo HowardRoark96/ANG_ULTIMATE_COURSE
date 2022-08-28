@@ -5,11 +5,13 @@ import { MainFolderResolve } from './resolvers/main-folder.resolve';
 import { AuthFormRoutingModule } from './auth-form/auth-form-routing.module';
 import { MailBoxComponent } from './main/components/mail-box/mail-box.component';
 import { MailBoxResolve } from './resolvers/mail-box.resolve';
+import { MainGuard } from './main/main.guard';
 
 const ROUTES: Routes = [
   {
     path: 'folder/:id',
     component: MainComponent,
+    canActivate: [MainGuard],
     resolve: {
       folders:  MainFolderResolve
     },

@@ -13,6 +13,7 @@ import {
 import { MainFolderResolve } from '../resolvers/main-folder.resolve';
 import { MailBoxResolve } from '../resolvers/mail-box.resolve';
 import { SearchComponent } from './components/messenger-box/components/search/search.component';
+import { MainGuard } from './main.guard';
 
 const routes: Routes = [];
 
@@ -34,7 +35,8 @@ const routes: Routes = [];
   ],
   providers: [
     MainFolderResolve,
-    MailBoxResolve
+    MailBoxResolve,
+    MainGuard
   ],
   exports: [
     MailBoxComponent,

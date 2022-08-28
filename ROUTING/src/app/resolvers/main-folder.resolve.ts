@@ -2,30 +2,17 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Folder } from '../main/interfaces/folder.interface';
 import { EmailService } from '../services/email.service';
-import { EMPTY, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { User } from '../auth-form/interfaces/user.interface';
 
 @Injectable()
 export class MainFolderResolve implements Resolve<Folder[] | never> {
   constructor(
     private emailService: EmailService,
-    private authService: AuthService,
-    private router: Router
-  ) {
-  }
+    private authService: AuthService
+  ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Folder[] | never> {
-    const currentUser = localStorage.getItem('currentUser');
-
-    if (!currentUser) {
-      this.router.navigate(['authorization']);
-
-      return EMPTY
-    }
-
-    this.authService.setCurrentUser(JSON.parse(currentUser) as User);
-
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Folder[]> {
     return this.emailService.getAllUserFolders(this.authService.user.value)
       .pipe(
       map((data: Folder[]) => {
